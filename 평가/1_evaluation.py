@@ -1,5 +1,5 @@
 from typing import Any, Optional, Tuple, Union
-
+from image_dataset import ImageDataset
 import torch
 import torch.utils.checkpoint
 from torch import nn
@@ -362,7 +362,11 @@ def main():
 
     num_samples = min(data_args.num_samples, len(df))
     removed_elem_background_paths = df[data_args.removed_column].sample(num_samples).values
-
+    df['y_file_name'] = df.removed_elem_background_path.str.split('/').str[-1]
+    miridih_df = ImageDataset()
+    print(df.iloc[0].values)
+    print(miridih_df)
+    exit()
     for removed_elem_background_path in removed_elem_background_paths:
         removed_elem_background_image = load_image(removed_elem_background_path)
         removed_elem_background_image_tensor = preprocess_image(removed_elem_background_image, image_processor).to(device)
